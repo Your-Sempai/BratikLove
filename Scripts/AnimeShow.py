@@ -35,12 +35,14 @@ def check_anime(text):
             row = cursor.fetchone()
             print(result)
             print(*row)
+            print(text)
             for i in range(int(*row)):
                 print(i)
                 cursor.execute(f"SELECT Поиск FROM Animebd WHERE id = {i + 1}")
                 anim = cursor.fetchone()
                 print(anim)
                 if text in str(anim).split(', '):
+                    print("+")
                     return f"1, {i}"
             return '0'
     finally:

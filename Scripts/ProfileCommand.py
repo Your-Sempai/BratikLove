@@ -30,16 +30,20 @@ def check(text):
     connection = get_connection()
     try:
         with connection.cursor() as cursor:
-            cursor.execute(f"SELECT * FROM Animebd")
-            row = cursor.fetchone()[10]
-            print(str(row).split(', '))
-            if text in str(row).split(', '):
-                cursor.execute(f"SELECT * FROM Animebd")
-                row = cursor.fetchone()[1]
-                print(row)
-                return row
-            else:
-                return '0'
+            result = cursor.execute(f"SELECT COUNT(id) FROM Animebd")
+            row = cursor.fetchone()
+            print(result)
+            print(*row)
+            print(text)
+            for i in range(int(*row)):
+                print(i)
+                cursor.execute(f"SELECT Поиск FROM Animebd WHERE id = {i + 1}")
+                anim = cursor.fetchone()
+                print(anim)
+                if text in str(anim).split(', '):
+                    print("+")
+                    return f"1"
+            return '0'
     finally:
         connection.close()
 
@@ -54,7 +58,8 @@ def get_anime(anime, user_progress, id):
                 cursor.execute(f"SELECT * FROM limitt WHERE id = '{id}'")
                 limit = cursor.fetchone()[1]
                 print(limit)
-                print(anime)
+                print(*anime)
+                print(str(anime[2:21]))
                 if limit == 0:
                     cursor.execute(f"SELECT pros_count FROM UserAnime WHERE id = '{id}'")
                     num = cursor.fetchone()
@@ -63,7 +68,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT pros FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    cursor.execute(f"UPDATE UserAnime SET pros = '{anime}' WHERE id = '{id}'")
+                    cursor.execute(f"UPDATE UserAnime SET pros = '{str(anime[2:21])}' WHERE id = '{id}'")
                     connection.commit()
                     cursor.execute(f"UPDATE UserAnime SET pros_count = '{count}' WHERE id = '{id}'")
                     connection.commit()
@@ -78,7 +83,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT pros FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    pros = str(*pros) + ', ' + anime
+                    pros = str(*pros) + ', ' + str(anime[2:21])
 
                     cursor.execute(f"UPDATE UserAnime SET pros = '{pros}' WHERE id = '{id}'")
                     connection.commit()
@@ -97,7 +102,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT brosh FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    cursor.execute(f"UPDATE UserAnime SET brosh = '{anime}' WHERE id = '{id}'")
+                    cursor.execute(f"UPDATE UserAnime SET brosh = '{str(anime[2:21])}' WHERE id = '{id}'")
                     connection.commit()
                     cursor.execute(f"UPDATE UserAnime SET brosh_count = '{count}' WHERE id = '{id}'")
                     connection.commit()
@@ -112,7 +117,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT brosh FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    pros = str(*pros) + ', ' + anime
+                    pros = str(*pros) + ', ' + str(anime[2:21])
 
                     cursor.execute(f"UPDATE UserAnime SET brosh = '{pros}' WHERE id = '{id}'")
                     connection.commit()
@@ -131,7 +136,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT zap FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    cursor.execute(f"UPDATE UserAnime SET zap = '{anime}' WHERE id = '{id}'")
+                    cursor.execute(f"UPDATE UserAnime SET zap = '{str(anime[2:21])}' WHERE id = '{id}'")
                     connection.commit()
                     cursor.execute(f"UPDATE UserAnime SET zap_count = '{count}' WHERE id = '{id}'")
                     connection.commit()
@@ -146,7 +151,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT zap FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    pros = str(*pros) + ', ' + anime
+                    pros = str(*pros) + ', ' + str(anime[2:21])
 
                     cursor.execute(f"UPDATE UserAnime SET zap = '{pros}' WHERE id = '{id}'")
                     connection.commit()
@@ -165,7 +170,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT look FROM UserAnime WHERE id = '{id}'")
                     cursor.fetchone()
 
-                    cursor.execute(f"UPDATE UserAnime SET look = '{anime}' WHERE id = '{id}'")
+                    cursor.execute(f"UPDATE UserAnime SET look = '{str(anime[2:21])}' WHERE id = '{id}'")
                     connection.commit()
                     cursor.execute(f"UPDATE UserAnime SET look_count = '{count}' WHERE id = '{id}'")
                     connection.commit()
@@ -180,7 +185,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT look FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    pros = str(*pros) + ', ' + anime
+                    pros = str(*pros) + ', ' + str(anime[2:21])
 
                     cursor.execute(f"UPDATE UserAnime SET look = '{pros}' WHERE id = '{id}'")
                     connection.commit()
@@ -199,7 +204,7 @@ def get_anime(anime, user_progress, id):
                     cursor.execute(f"SELECT pere FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    cursor.execute(f"UPDATE UserAnime SET pere = '{anime}' WHERE id = '{id}'")
+                    cursor.execute(f"UPDATE UserAnime SET pere = '{str(anime[2:21])}' WHERE id = '{id}'")
                     connection.commit()
                     cursor.execute(f"UPDATE UserAnime SET pere_count = '{count}' WHERE id = '{id}'")
                     connection.commit()
@@ -211,10 +216,10 @@ def get_anime(anime, user_progress, id):
                     num = cursor.fetchone()
                     count = int(*num) + 1
 
-                    cursor.execute(f"SELECT pere FROM anime WHERE id = '{id}'")
+                    cursor.execute(f"SELECT pere FROM UserAnime WHERE id = '{id}'")
                     pros = cursor.fetchone()
 
-                    pros = str(*pros) + ', ' + anime
+                    pros = str(*pros) + ', ' + str(anime[2:21])
 
                     cursor.execute(f"UPDATE UserAnime SET pere = '{pros}' WHERE id = '{id}'")
                     connection.commit()
@@ -226,21 +231,22 @@ def get_anime(anime, user_progress, id):
 
 # Проверяет, нет ли в данных пользователя аниме которое он хочет добавить
 # Работает вместе с get_anime()
-def add_pros_anime(anime, uid, user_progress):
+def add_pros_anime(an, uid, user_progress):
     connection = get_connection()
     try:
         with connection.cursor() as cursor:
+            anime = an
             cursor.execute(f"SELECT * FROM account WHERE uid = '{uid}'")
             id = cursor.fetchone()[1]
-            print('+')
+            print('+...')
             anim = False
             cursor.execute(f"SELECT * FROM UserAnime WHERE id = '{id}'")
             a = cursor.fetchone()
-            print(a)
-            if anime in str(a):
+            print(anime)
+            if anime[2:21] in str(a):
                 print('++')
                 anim = True
-            print(anim)
+            print(str(anime[2:21]))
 
             if anim:
                 cursor.execute(f"SELECT pros FROM UserAnime WHERE id = '{id}'")
@@ -259,10 +265,18 @@ def add_pros_anime(anime, uid, user_progress):
                     cursor.execute(f"SELECT pros_count FROM UserAnime WHERE id = '{id}'")
                     a = cursor.fetchone()
                     a = int(*a) - 1
-                    cursor.execute(f"UPDATE UserAnime SET pros = '{', '.join(one)}' WHERE id = '{id}'")
-                    connection.commit()
-                    cursor.execute(f"UPDATE UserAnime SET pros_count = '{a}' WHERE id = '{id}'")
-                    connection.commit()
+                    if one != []:
+                        cursor.execute(f"UPDATE UserAnime SET pros = '{', '.join(one)}' WHERE id = '{id}'")
+                        connection.commit()
+                        cursor.execute(f"UPDATE UserAnime SET pros_count = '{a}' WHERE id = '{id}'")
+                        connection.commit()
+                    else:
+                        cursor.execute(f"UPDATE UserAnime SET pros = '{None}' WHERE id = '{id}'")
+                        connection.commit()
+                        cursor.execute(f"UPDATE UserAnime SET pros_count = '{a}' WHERE id = '{id}'")
+                        connection.commit()
+                        cursor.execute(f"UPDATE limitt SET limit1 = '0' WHERE id = '{id}'")
+                        connection.commit()
                     get_anime(anime, user_progress, id)
                 else:
                     cursor.execute(f"SELECT brosh FROM UserAnime WHERE id = '{id}'")
@@ -280,10 +294,18 @@ def add_pros_anime(anime, uid, user_progress):
                         cursor.execute(f"SELECT brosh_count FROM UserAnime WHERE id = '{id}'")
                         a = cursor.fetchone()
                         a = int(*a) - 1
-                        cursor.execute(f"UPDATE UserAnime SET brosh = '{', '.join(one)}' WHERE id = '{id}'")
-                        connection.commit()
-                        cursor.execute(f"UPDATE UserAnime SET brosh_count = '{a}' WHERE id = '{id}'")
-                        connection.commit()
+                        if one != []:
+                            cursor.execute(f"UPDATE UserAnime SET brosh = '{', '.join(one)}' WHERE id = '{id}'")
+                            connection.commit()
+                            cursor.execute(f"UPDATE UserAnime SET brosh_count = '{a}' WHERE id = '{id}'")
+                            connection.commit()
+                        else:
+                            cursor.execute(f"UPDATE UserAnime SET brosh = '{None}' WHERE id = '{id}'")
+                            connection.commit()
+                            cursor.execute(f"UPDATE UserAnime SET brosh_count = '{a}' WHERE id = '{id}'")
+                            connection.commit()
+                            cursor.execute(f"UPDATE limitt SET limit2 = '0' WHERE id = '{id}'")
+                            connection.commit()
                         get_anime(anime, user_progress, id)
                     else:
                         cursor.execute(f"SELECT look FROM UserAnime WHERE id = '{id}'")
@@ -301,6 +323,18 @@ def add_pros_anime(anime, uid, user_progress):
                             cursor.execute(f"SELECT look_count FROM UserAnime WHERE id = '{id}'")
                             a = cursor.fetchone()
                             a = int(*a) - 1
+                            if one != []:
+                                cursor.execute(f"UPDATE UserAnime SET look = '{', '.join(one)}' WHERE id = '{id}'")
+                                connection.commit()
+                                cursor.execute(f"UPDATE UserAnime SET look_count = '{a}' WHERE id = '{id}'")
+                                connection.commit()
+                            else:
+                                cursor.execute(f"UPDATE UserAnime SET look = '{None}' WHERE id = '{id}'")
+                                connection.commit()
+                                cursor.execute(f"UPDATE UserAnime SET look_count = '{a}' WHERE id = '{id}'")
+                                connection.commit()
+                                cursor.execute(f"UPDATE limitt SET limit3 = '0' WHERE id = '{id}'")
+                                connection.commit()
                             cursor.execute(f"UPDATE UserAnime SET look = '{', '.join(one)}' WHERE id = '{id}'")
                             connection.commit()
                             cursor.execute(f"UPDATE UserAnime SET look_count = '{a}' WHERE id = '{id}'")
@@ -322,10 +356,18 @@ def add_pros_anime(anime, uid, user_progress):
                                 cursor.execute(f"SELECT pere_count FROM UserAnime WHERE id = '{id}'")
                                 a = cursor.fetchone()
                                 a = int(*a) - 1
-                                cursor.execute(f"UPDATE UserAnime SET pere = '{', '.join(one)}' WHERE id = '{id}'")
-                                connection.commit()
-                                cursor.execute(f"UPDATE UserAnime SET pere_count = '{a}' WHERE id = '{id}'")
-                                connection.commit()
+                                if one != []:
+                                    cursor.execute(f"UPDATE UserAnime SET pere = '{', '.join(one)}' WHERE id = '{id}'")
+                                    connection.commit()
+                                    cursor.execute(f"UPDATE UserAnime SET pere_count = '{a}' WHERE id = '{id}'")
+                                    connection.commit()
+                                else:
+                                    cursor.execute(f"UPDATE UserAnime SET pere = '{None}' WHERE id = '{id}'")
+                                    connection.commit()
+                                    cursor.execute(f"UPDATE UserAnime SET pere_count = '{a}' WHERE id = '{id}'")
+                                    connection.commit()
+                                    cursor.execute(f"UPDATE limitt SET limit4 = '0' WHERE id = '{id}'")
+                                    connection.commit()
                                 get_anime(anime, user_progress, id)
                             else:
                                 cursor.execute(f"SELECT zap FROM UserAnime WHERE id = '{id}'")
@@ -343,15 +385,23 @@ def add_pros_anime(anime, uid, user_progress):
                                     cursor.execute(f"SELECT zap_count FROM UserAnime WHERE id = '{id}'")
                                     a = cursor.fetchone()
                                     a = int(*a) - 1
-                                    cursor.execute(f"UPDATE UserAnime SET zap = '{', '.join(one)}' WHERE id = '{id}'")
-                                    connection.commit()
-                                    cursor.execute(f"UPDATE UserAnime SET zap_count = '{a}' WHERE id = '{id}'")
-                                    connection.commit()
+                                    if one != []:
+                                        cursor.execute(f"UPDATE UserAnime SET zap = '{', '.join(one)}' WHERE id = '{id}'")
+                                        connection.commit()
+                                        cursor.execute(f"UPDATE UserAnime SET zap = '{a}' WHERE id = '{id}'")
+                                        connection.commit()
+                                    else:
+                                        cursor.execute(f"UPDATE UserAnime SET zap = '{None}' WHERE id = '{id}'")
+                                        connection.commit()
+                                        cursor.execute(f"UPDATE UserAnime SET zap_count = '{a}' WHERE id = '{id}'")
+                                        connection.commit()
+                                        cursor.execute(f"UPDATE limitt SET limit5 = '0' WHERE id = '{id}'")
+                                        connection.commit()
                                     get_anime(anime, user_progress, id)
                                 else:
                                     get_anime(anime, user_progress, id)
             else:
-                get_anime(anime, user_progress, id)
+                get_anime(anime, user_progress, uid)
     finally:
         connection.close()
 
@@ -475,5 +525,99 @@ def check_count_pros_anime(user_id):
                 return '21'
             elif count >= 10000:
                 return '22'
+    finally:
+        connection.close()
+
+
+def checks(text):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            result = cursor.execute(f"SELECT COUNT(id) FROM Animebd")
+            row = cursor.fetchone()
+            print(result)
+            print(*row)
+            print(text)
+            for i in range(int(*row)):
+                print(i)
+                cursor.execute(f"SELECT Поиск FROM Animebd WHERE id = {i + 1}")
+                anim = cursor.fetchone()
+                cursor.execute(f"SELECT название FROM Animebd WHERE id = {i + 1}")
+                animes = cursor.fetchone()
+                print(anim)
+                if text in str(anim).split(', '):
+                    print("+")
+                    print(animes[0], "+")
+                    return f"{animes}"
+    finally:
+        connection.close()
+
+
+def peres(uid):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT pere FROM UserAnime WHERE id = {uid}")
+            animes = cursor.fetchone()
+            if None in animes:
+                return "Пусто"
+            else:
+                return animes
+    finally:
+        connection.close()
+
+
+def pross(uid):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT pros FROM UserAnime WHERE id = {uid}")
+            animes = cursor.fetchone()
+            if None in animes:
+                return "Пусто"
+            else:
+                return animes
+    finally:
+        connection.close()
+
+
+def broshs(uid):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT brosh FROM UserAnime WHERE id = {uid}")
+            animes = cursor.fetchone()
+            if None in animes:
+                return "Пусто"
+            else:
+                return animes
+    finally:
+        connection.close()
+
+
+def zaps(uid):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT zap FROM UserAnime WHERE id = {uid}")
+            animes = cursor.fetchone()
+            if None in animes:
+                return "Пусто"
+            else:
+                return animes
+    finally:
+        connection.close()
+
+
+def looks(uid):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT look FROM UserAnime WHERE id = {uid}")
+            animes = cursor.fetchone()
+            if None in animes:
+                return "Пусто"
+            else:
+                return animes
     finally:
         connection.close()
