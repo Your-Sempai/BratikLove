@@ -77,7 +77,7 @@ while True:
             elif 'просмотрено' in mes.split()[0]:
                 keyboard = scanned_anime()
                 if len(mes) > 11:
-                    one = check(mess[12:])
+                    one = check(mes[12:])
                     name = mess[12:]
                     if one == '0':
                         vk.method("messages.send", {"peer_id": peer_id,
@@ -94,14 +94,15 @@ while True:
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                     else:
-                        add_pros_anime(one, peer_id, mes.split()[:12])
+                        two = checks(mes[12:])
+                        add_pros_anime(two, peer_id, mes.split()[:12])
                         print(mes.split()[0])
                         vk.method("messages.send", {"peer_id": peer_id, "message":
                             f"Добавлено",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                 else:
-                    one = spisok_anime(peer_id, mes)
+                    one = pross(peer_id)
                     if one == 'Пусто':
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
@@ -111,13 +112,13 @@ while True:
                     else:
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
-                                                        f"{', '.join(one)}\n",
+                                                        f"{str(* one)}\n",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
             elif 'брошено' in mes.split()[0]:
                 keyboard = forsaken_anime()
                 if len(mes) > 7:
-                    one = check(mess[8:])
+                    one = check(mes[8:])
                     name = mess[8:]
                     print(name)
                     if one == '0':
@@ -135,14 +136,15 @@ while True:
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                     else:
-                        add_pros_anime(one, peer_id, mes.split()[:8])
+                        two = checks(mes[8:])
+                        add_pros_anime(two, peer_id, mes.split()[:8])
                         print(mes.split()[0])
                         vk.method("messages.send", {"peer_id": peer_id, "message":
                             f"Добавлено",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                 else:
-                    one = spisok_anime(peer_id, mes)
+                    one = broshs(peer_id)
                     print(one)
                     if one == 'Пусто':
                         vk.method("messages.send", {"peer_id": peer_id,
@@ -153,13 +155,13 @@ while True:
                     else:
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
-                                                        f"{one}\n",
+                                                        f"{str(*one)}\n",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2137483647)})
             elif 'запланировано' in mes.split()[0]:
                 keyboard = planned_anime()
                 if len(mes) > 13:
-                    one = check(mess[14:])
+                    one = check(mes[14:])
                     name = mess[14:]
                     if one == '0':
                         vk.method("messages.send", {"peer_id": peer_id,
@@ -176,14 +178,15 @@ while True:
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                     else:
-                        add_pros_anime(one, peer_id, mes.split()[:14])
+                        two = checks(mes[14:])
+                        add_pros_anime(two, peer_id, mes.split()[:14])
                         print(mes.split()[0])
                         vk.method("messages.send", {"peer_id": peer_id, "message":
                             f"Добавлено",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                 else:
-                    one = spisok_anime(peer_id, mes)
+                    one = zaps(peer_id)
                     if one == 'Пусто':
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
@@ -193,7 +196,7 @@ while True:
                     else:
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
-                                                        f"{', '.join(one)}\n",
+                                                        f"{str(* one)}\n",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                 # Пользователь устанавливает себе имя
@@ -217,14 +220,15 @@ while True:
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                     else:
-                        add_pros_anime(name, peer_id, mes.split()[:7])
+                        two = checks(mes[7:])
+                        add_pros_anime(two, peer_id, mes.split()[:7])
                         print(mes.split()[0])
                         vk.method("messages.send", {"peer_id": peer_id, "message":
                             f"Добавлено",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                 else:
-                    one = spisok_anime(peer_id, mes)
+                    one = looks(peer_id)
                     if one == 'Пусто':
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
@@ -234,13 +238,14 @@ while True:
                     else:
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
-                                                        f"{', '.join(one)}\n",
+                                                        f"{str(* one)}\n",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
             elif 'пересматриваю' in mes.split()[0]:
                 keyboard = review_anime()
                 if len(mes) > 13:
-                    one = check(mess[14:])
+                    print(mes[14:])
+                    one = check(mes[14:])
                     name = mess[14:]
                     if one == '0':
                         vk.method("messages.send", {"peer_id": peer_id,
@@ -257,15 +262,16 @@ while True:
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                     else:
-                        add_pros_anime(name, peer_id, mes.split()[:14])
+                        two = checks(mes[14:])
+                        add_pros_anime(two, peer_id, mes[:13])
                         print(mes.split()[0])
                         vk.method("messages.send", {"peer_id": peer_id, "message":
                             f"Добавлено",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
                 else:
-                    one = spisok_anime(peer_id, mes)
-                    if one == 'Пусто':
+                    ones = peres(peer_id)
+                    if ones == 'Пусто':
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
                                                         f"Пусто",
@@ -274,7 +280,7 @@ while True:
                     else:
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
-                                                        f"{', '.join(one)}\n",
+                                                        f"{str(*ones)}\n",
                                                     "keyboard": keyboard,
                                                     "random_id": random.randint(1, 2147483647)})
             elif 'имя' in mes:
@@ -404,7 +410,7 @@ while True:
                     register(peer_id)
                     id = 0
                     keyboard = main_keyboard()
-                    one = check_anime(mess)
+                    one = check_anime(mes)
                     if one.split(', ')[0] == '0':
                         vk.method("messages.send", {"peer_id": peer_id,
                                                     "message":
